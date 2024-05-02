@@ -41,7 +41,7 @@ public class HotelReservationSystem {
                     viewReservation(st);
                     break;
                 case 3:
-                    getRoomNumber(con, sc, st);
+                    getRoomNumber(sc, st);
                     break;
                 case 4:
                     updateReservation(con, st, sc);
@@ -109,7 +109,7 @@ public class HotelReservationSystem {
 
     }
 
-    public static void getRoomNumber(Connection con, Scanner sc, Statement st) throws SQLException {
+    public static void getRoomNumber(Scanner sc, Statement st) throws SQLException {
         System.out.println("Enter the Reservation ID:");
         int resId = sc.nextInt();
 
@@ -138,10 +138,14 @@ public class HotelReservationSystem {
             System.out.println("Enter the new contact number");
             String newContactNumber = sc.next();
 
-            String q = "update reservations set guestName = " + "'" + newName + "'" + " , roomNumber = " + newRoomNumber
-                    + " ,contactNumber = " + newContactNumber;
+            String q = "update reservations set guestName =?, roomNumber =?, contactNumber= ?";
 
-            int rowsAffected = st.executeUpdate(q);
+            PreparedStatement pst = con.prepareStatement(q);
+            pst.setString(1, newName);
+            pst.setInt(2, newRoomNumber);
+            pst.setString(3, newContactNumber);
+
+            int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Reservation updated");
             }

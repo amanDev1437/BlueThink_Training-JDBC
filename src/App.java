@@ -1,3 +1,4 @@
+import java.io.FileInputStream;
 import java.sql.*;
 
 public class App {
@@ -34,22 +35,31 @@ public class App {
             // System.out.println(dbmd.getDriverVersion());
             // System.out.println(dbmd.getDriverName());
 
-            // Insert data into table
-            String name = "AmanSingh01";
-            String city = "Prayagraj";
-            String q = "insert into table1(name, city) values(?,?)";
+            // // Insert data into table
+            // String name = "AmanSingh01";
+            // String city = "Prayagraj";
+            // String q = "insert into table1(name, city) values(?,?)";
+
+            // PreparedStatement pst = con.prepareStatement(q);
+            // pst.setString(1, name);
+            // pst.setString(2, city);
+
+            // int rowsAffected = pst.executeUpdate();
+
+            // if (rowsAffected > 0) {
+            // System.out.println("inserted");
+            // } else {
+            // System.out.println("something went wrong");
+            // }
+
+            String q = "insert into images(pic) values(?)";
 
             PreparedStatement pst = con.prepareStatement(q);
-            pst.setString(1, name);
-            pst.setString(2, city);
 
-            int rowsAffected = pst.executeUpdate();
+            FileInputStream fis = new FileInputStream("img.jpg");
 
-            if (rowsAffected > 0) {
-                System.out.println("inserted");
-            } else {
-                System.out.println("something went wrong");
-            }
+            pst.setBinaryStream(1, fis);
+            pst.executeUpdate();
 
             con.close();
 
