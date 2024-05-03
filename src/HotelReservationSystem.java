@@ -69,7 +69,7 @@ public class HotelReservationSystem {
         System.out.println("Enter the contact:");
         String contactNumber = sc.next();
 
-        String query = "insert into reservations(guestName,roomNumber,contactNumber) values(?,?,?)";
+        String query = "insert into guests(guestName,roomNumber,contactNumber) values(?,?,?)";
 
         try {
             PreparedStatement pst = con.prepareStatement(query);
@@ -119,7 +119,7 @@ public class HotelReservationSystem {
             int roomNumber = rset.getInt("roomNumber");
             System.out.println("Room number for Reservation ID " + resId + " is:" + roomNumber);
         } else {
-            System.out.println("Reservation not found for given ID and guest name");
+            System.out.println("Reservation not found for given ID");
         }
     }
 
@@ -138,7 +138,7 @@ public class HotelReservationSystem {
             System.out.println("Enter the new contact number");
             String newContactNumber = sc.next();
 
-            String q = "update reservations set guestName =?, roomNumber =?, contactNumber= ?";
+            String q = "update reservations set guestName =?, roomNumber =?, contactNumber= ? where resId = " + resId;
 
             PreparedStatement pst = con.prepareStatement(q);
             pst.setString(1, newName);
@@ -151,23 +151,31 @@ public class HotelReservationSystem {
             }
 
         } else {
-            System.out.println("Reservation does not exist with:" + resId);
+            System.out.println("Reservation does not exist with reservation ID:" + resId);
         }
 
     }
 
     public static void deleteReservation(Scanner sc, Statement st) throws SQLException {
-        System.out.println("Enter the Reservation ID:");
-        int resId = sc.nextInt();
+        System.out.println("Enter the PIN");
+        int pin = sc.nextInt();
 
-        String q = "delete from reservations where resId= " + resId;
+        if (pin == 563978) {
+            System.out.println("Enter the Reservation ID:");
+            int resId = sc.nextInt();
 
-        int rowsAffected = st.executeUpdate(q);
+            String q = "delete from reservations where resId= " + resId;
 
-        if (rowsAffected > 0) {
-            System.out.println("Reservation deleted");
+            int rowsAffected = st.executeUpdate(q);
+
+            if (rowsAffected > 0) {
+                System.out.println("Reservation deleted");
+            } else {
+                System.out.println("Reservation id does not exist");
+            }
+
         } else {
-            System.out.println("Reservation id does not exist");
+            System.out.println("WRONG PIN");
         }
 
     }
@@ -175,6 +183,10 @@ public class HotelReservationSystem {
     public static void exit() {
         System.out.println("Thanks for using Hotel Resrvations System");
         System.out.println("exiting the app...");
+    }
+
+    public static void updateRoomStatus() {
+
     }
 
     public static boolean isExist(Statement st, int resId) throws SQLException {

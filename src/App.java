@@ -20,12 +20,12 @@ public class App {
 
             Statement st = con.createStatement();
 
-            // String query = "select * from city";
-            // ResultSet rs = st.executeQuery(query);
+            String query = "select * from city";
+            ResultSet rs = st.executeQuery(query);
 
-            // while (rs.next()) {
-            // // System.out.println(rs.getInt(1) + " " + rs.getString(2));
-            // }
+            while (rs.next()) {
+                System.out.println(rs.getInt(1) + " " + rs.getString(2));
+            }
 
             // ResultSetMetaData rsmd = rs.getMetaData();
             // // System.out.println(rsmd);
